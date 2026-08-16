@@ -1,0 +1,13 @@
+{
+  "name": "cpcjs",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Caprice32 port for playing Amstrad CPC software in a browser",
+  "scripts": {
+    "build": "./scripts/build.sh",
+    "serve": "npx --yes serve public -l 8080",
+    "test": "node --test test/*.test.mjs"
+  },
+  "license": "GPL-2.0-only"
+}

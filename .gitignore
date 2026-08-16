@@ -1,0 +1,4 @@
+public/emulator/
+node_modules/
+npm-debug.log*
+.tools/
