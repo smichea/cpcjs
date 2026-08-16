@@ -1,5 +1,10 @@
 # CPCJS
 
+> [!WARNING]
+> **Projet en construction.** Le port de l’émulateur est encore expérimental
+> et n’est pas fonctionnel pour le moment. Il n’est pas encore possible de
+> jouer correctement à des jeux CPC dans le navigateur.
+
 CPCJS est le port navigateur de [Caprice32](https://github.com/ColinPitrat/caprice32).
 Le cœur C++ original est compilé en WebAssembly et JavaScript avec Emscripten;
 SDL2 relie l’écran, le son, le clavier et les manettes aux API du navigateur.
