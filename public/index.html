@@ -27,12 +27,38 @@
       </div>
 
       <div class="controls">
-        <label class="file-button" for="game-file">Choisir un jeu</label>
-        <input id="game-file" type="file" accept=".dsk,.sna,.cdt,.voc,.cpr,.ipf,.raw,.zip">
+        <button id="choose-game" class="primary-button" type="button">Choisir un jeu</button>
         <button id="start-empty" type="button">Démarrer sans jeu</button>
         <button id="fullscreen" type="button" disabled>Plein écran</button>
       </div>
     </section>
+
+    <dialog id="game-picker" aria-labelledby="game-picker-title">
+      <form method="dialog" class="picker-header">
+        <div>
+          <p class="eyebrow">BIBLIOTHÈQUE CPC</p>
+          <h2 id="game-picker-title">Choisir un jeu</h2>
+        </div>
+        <button class="close-button" value="cancel" aria-label="Fermer">×</button>
+      </form>
+
+      <section class="picker-section">
+        <h3>Depuis cet appareil</h3>
+        <p>Ouvrez une image CPC conservée sur votre ordinateur.</p>
+        <label class="file-button" for="game-file">Parcourir les fichiers</label>
+        <input id="game-file" type="file" accept=".dsk,.sna,.cdt,.voc,.cpr,.ipf,.raw,.zip">
+      </section>
+
+      <section class="picker-section">
+        <h3>Jeux hébergés</h3>
+        <p id="catalog-message">Chargement du catalogue…</p>
+        <div id="hosted-controls" class="hosted-controls" hidden>
+          <label for="hosted-game">Jeu</label>
+          <select id="hosted-game"></select>
+          <button id="launch-hosted" type="button">Jouer</button>
+        </div>
+      </section>
+    </dialog>
 
     <section class="help">
       <div><kbd>↑ ↓ ← →</kbd><span>Joystick</span></div>

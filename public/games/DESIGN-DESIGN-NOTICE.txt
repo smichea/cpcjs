@@ -1,0 +1,10 @@
+
+des_des.zip:
+
+This archive contains five games by Design Design Software: Tank Busters,
+Halls of the Things '85, Dark Star, Forbidden Planet and Bat & Ball.
+
+These games were donated for unmodified free-of-charge distribution 
+by their author, Simon Brattel (crem@cix.compulink.co.uk).
+
+They were saved as 64 K snapshots under CPCEMU 1.2 emulating a CPC6128.

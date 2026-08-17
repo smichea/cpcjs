@@ -72,6 +72,11 @@ test('loads a disk image and runs its program', async ({ page }) => {
   const fixture = Buffer.from((await readFile(fixtureUrl, 'utf8')).trim(), 'base64');
 
   await waitForRuntime(page);
+  await page.locator('#choose-game').click();
+  await expect(page.locator('#game-picker')).toBeVisible();
+  await expect(page.locator('#catalog-message'))
+    .toHaveText('Ces fichiers sont publiés avec l’autorisation indiquée dans le catalogue.');
+  await expect(page.locator('#hosted-game option')).toHaveCount(12);
   await page.evaluate(() => {
     const config = window.Module.FS.readFile('/cap32.cfg', { encoding: 'utf8' });
     window.Module.FS.writeFile('/cap32.cfg', config.replace('printer=0', 'printer=1'));
@@ -84,6 +89,7 @@ test('loads a disk image and runs its program', async ({ page }) => {
 
   await expect(page.locator('#status')).toHaveText('En jeu — hello.zip');
   await expect.poll(() => page.evaluate(() => window.cpcjsState.mode)).toBe('game');
+  await expect.poll(() => page.evaluate(() => window.cpcjsState.gameSource)).toBe('local');
   await expect.poll(() => page.evaluate(() => window.cpcjsState.gamePath)).toBe('/games/hello.zip');
   await waitForFrames(page, 200);
 
@@ -103,5 +109,41 @@ test('loads a disk image and runs its program', async ({ page }) => {
       return '';
     }
   })).toBe('Hello, World !\r\n');
+  await expectHealthyRuntime(page, errors);
+});
+
+test('downloads and starts a hosted game from the catalog', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+
+  await waitForRuntime(page);
+  await page.locator('#choose-game').click();
+  await page.locator('#hosted-game').selectOption('dark-star');
+  await page.locator('#launch-hosted').click();
+
+  await expect(page.locator('#game-picker')).not.toBeVisible();
+  await expect(page.locator('#status')).toHaveText('En jeu — dark-star.sna');
+  await expect.poll(() => page.evaluate(() => window.cpcjsState.mode)).toBe('game');
+  await expect.poll(() => page.evaluate(() => window.cpcjsState.gameSource)).toBe('hosted');
+  await expect.poll(() => page.evaluate(() => window.cpcjsState.gamePath))
+    .toBe('/games/dark-star.sna');
+  await waitForFrames(page, 30);
+  await expectHealthyRuntime(page, errors);
+});
+
+test('extracts a Vortex game in memory from the original hosted archive', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+
+  await waitForRuntime(page);
+  await page.locator('#choose-game').click();
+  await page.locator('#hosted-game').selectOption('alien-highway');
+  await page.locator('#launch-hosted').click();
+
+  await expect(page.locator('#status')).toHaveText('En jeu — alien-highway.sna');
+  await expect.poll(() => page.evaluate(() => window.cpcjsState.gameSource)).toBe('hosted');
+  await expect.poll(() => page.evaluate(() => window.cpcjsState.gamePath))
+    .toBe('/games/alien-highway.sna');
+  await waitForFrames(page, 30);
   await expectHealthyRuntime(page, errors);
 });
