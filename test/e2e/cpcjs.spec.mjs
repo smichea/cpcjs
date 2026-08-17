@@ -5,6 +5,7 @@ const fixtureUrl = new URL('../fixtures/hello.zip.b64', import.meta.url);
 
 async function waitForRuntime(page) {
   await page.goto('/');
+  await expect(page.locator('.repo-link')).toHaveAttribute('href', 'https://github.com/smichea/cpcjs');
   await expect(page.locator('#status')).toHaveAttribute('data-state', 'ready');
   await expect.poll(() => page.evaluate(() => window.cpcjsState.runtimeReady)).toBe(true);
 }
