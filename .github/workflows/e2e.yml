@@ -1,0 +1,41 @@
+name: End-to-end tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  playwright:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out CPCJS
+        uses: actions/checkout@v4
+        with:
+          path: cpcjs
+
+      - name: Check out the Caprice32 web-compatible core
+        uses: actions/checkout@v4
+        with:
+          repository: smichea/caprice32
+          ref: agent/add-emscripten-yield
+          path: caprice32
+
+      - name: Set up Emscripten
+        uses: mymindstorm/setup-emsdk@v14
+        with:
+          version: latest
+          actions-cache-folder: emsdk-cache
+
+      - name: Install JavaScript dependencies
+        run: npm ci
+        working-directory: cpcjs
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+        working-directory: cpcjs
+
+      - name: Run unit and end-to-end tests
+        run: npm test
+        working-directory: cpcjs
