@@ -49,6 +49,27 @@ servi via HTTP; ouvrir directement `index.html` avec `file://` ne fonctionne pas
 Pour changer de disque après le démarrage, utilisez le menu Caprice32 (`F1`).
 Pour démarrer directement avec une autre image, rechargez la page.
 
+## Jeux locaux et catalogue hébergé
+
+Le bouton **Choisir un jeu** propose deux sources:
+
+- une image CPC présente sur l'appareil de l'utilisateur;
+- un jeu du catalogue hébergé dans `public/games/`.
+
+Les jeux hébergés suivent la convention `nom-du-jeu.<format>` en minuscules,
+avec un identifiant stable, une empreinte SHA-256 et un lien vers l'autorisation
+de redistribution dans `public/games/catalog.json`. Le navigateur contrôle
+l'empreinte du fichier avant de le lancer.
+
+Le catalogue contient actuellement cinq jeux Design Design Software distribués
+avec l'autorisation de Simon Brattel et les sept jeux CPC du Vortex Emulation
+Package. Ce dernier reste hébergé sous la forme de son archive originale; le
+navigateur en extrait uniquement le jeu sélectionné en mémoire. Un autre jeu ne
+doit être ajouté que si son titulaire autorise explicitement la
+**redistribution**. Une mention « abandonware », un téléchargement gratuit ou
+une page permettant de jouer en ligne ne suffisent pas. La provenance, les
+conditions et le schéma sont documentés dans `public/games/README.md`.
+
 ## Tests
 
 Installer Chromium pour Playwright une première fois, puis lancer la suite:
@@ -90,4 +111,6 @@ déclenché à la demande et ne déploie rien automatiquement lors d’un push.
 ## Licence
 
 Caprice32 et ce port sont distribués sous GPL-2.0. Les ROM incluses dans le
-dépôt Caprice32 sont empaquetées au moment du build.
+dépôt Caprice32 sont empaquetées au moment du build. Les jeux tiers de
+`public/games/` conservent leur copyright et ne sont pas couverts par la GPL;
+leurs conditions sont documentées dans ce répertoire.

@@ -1,0 +1,244 @@
+{
+  "version": 1,
+  "games": [
+    {
+      "slug": "bat-and-ball",
+      "title": "Bat & Ball",
+      "publisher": "Design Design Software",
+      "format": "sna",
+      "file": "games/bat-and-ball.sna",
+      "sha256": "ac9233bb1c0c5654c4a7ad423133c01c17bf4cea42f9bef02dbfc9a093e59158",
+      "rights": {
+        "status": "freeware",
+        "redistributionUrl": "https://www.genesis8bit.fr/amstrad/game-rom/gamecal.php",
+        "notice": "games/DESIGN-DESIGN-NOTICE.txt"
+      },
+      "source": {
+        "archive": "https://www.genesis8bit.fr/frontend/gamecal/desdes.zip",
+        "originalFile": "bat.sna"
+      }
+    },
+    {
+      "slug": "dark-star",
+      "title": "Dark Star",
+      "publisher": "Design Design Software",
+      "format": "sna",
+      "file": "games/dark-star.sna",
+      "sha256": "bb584b33965697a7e65e95f2065b19206a1cea3bf177173dbaf9b7e8509f7fc9",
+      "rights": {
+        "status": "freeware",
+        "redistributionUrl": "https://www.genesis8bit.fr/amstrad/game-rom/gamecal.php",
+        "notice": "games/DESIGN-DESIGN-NOTICE.txt"
+      },
+      "source": {
+        "archive": "https://www.genesis8bit.fr/frontend/gamecal/desdes.zip",
+        "originalFile": "ds.sna"
+      }
+    },
+    {
+      "slug": "forbidden-planet",
+      "title": "Forbidden Planet",
+      "publisher": "Design Design Software",
+      "format": "sna",
+      "file": "games/forbidden-planet.sna",
+      "sha256": "b027d26a000c64c459412358146d704b8ab11d8b0dbfc26835343771e1dbeaf5",
+      "rights": {
+        "status": "freeware",
+        "redistributionUrl": "https://www.genesis8bit.fr/amstrad/game-rom/gamecal.php",
+        "notice": "games/DESIGN-DESIGN-NOTICE.txt"
+      },
+      "source": {
+        "archive": "https://www.genesis8bit.fr/frontend/gamecal/desdes.zip",
+        "originalFile": "fp.sna"
+      }
+    },
+    {
+      "slug": "halls-of-the-things-85",
+      "title": "Halls of the Things ’85",
+      "publisher": "Design Design Software",
+      "format": "sna",
+      "file": "games/halls-of-the-things-85.sna",
+      "sha256": "c612d038d62e51c17d780820f3b652afaa7b3b3a86e329a8d816f46a20aa480f",
+      "rights": {
+        "status": "freeware",
+        "redistributionUrl": "https://www.genesis8bit.fr/amstrad/game-rom/gamecal.php",
+        "notice": "games/DESIGN-DESIGN-NOTICE.txt"
+      },
+      "source": {
+        "archive": "https://www.genesis8bit.fr/frontend/gamecal/desdes.zip",
+        "originalFile": "halls.sna"
+      }
+    },
+    {
+      "slug": "tank-busters",
+      "title": "Tank Busters",
+      "publisher": "Design Design Software",
+      "format": "sna",
+      "file": "games/tank-busters.sna",
+      "sha256": "681d6e6a6c4c6e9b221eba2a7e2726085ce301d0911d4cb242e923df2363ebd6",
+      "rights": {
+        "status": "freeware",
+        "redistributionUrl": "https://www.genesis8bit.fr/amstrad/game-rom/gamecal.php",
+        "notice": "games/DESIGN-DESIGN-NOTICE.txt"
+      },
+      "source": {
+        "archive": "https://www.genesis8bit.fr/frontend/gamecal/desdes.zip",
+        "originalFile": "tb.sna"
+      }
+    },
+    {
+      "slug": "alien-highway",
+      "title": "Alien Highway",
+      "year": 1986,
+      "publisher": "Vortex Software",
+      "format": "sna",
+      "file": "games/vortex/VTX_CPC.ZIP",
+      "sha256": "91ba5b54fd3c41b1ca45ba3351ca0b63745fa4c52d1b1525dbd4cee9a63ea476",
+      "archive": {
+        "type": "zip",
+        "member": "ALIENH.SNA",
+        "sha256": "7e8a9859408942b9e59979b6625c38fd2e5620aaabeaa55573d14187f4a070b9"
+      },
+      "rights": {
+        "status": "freeware",
+        "redistributionUrl": "https://www.genesis8bit.fr/amstrad/game-rom/gamecal.php",
+        "notice": "VORTEX.TXT dans l’archive originale"
+      },
+      "source": {
+        "archive": "https://www.genesis8bit.fr/frontend/gamecal/vtx_cpc.zip"
+      }
+    },
+    {
+      "slug": "android-one",
+      "title": "Android One",
+      "year": 1985,
+      "publisher": "Vortex Software",
+      "format": "sna",
+      "file": "games/vortex/VTX_CPC.ZIP",
+      "sha256": "5477e864bde2eefb039d41476013e974b94c88de4be00fe5cd79d398d80fb918",
+      "archive": {
+        "type": "zip",
+        "member": "ANDROID1.SNA",
+        "sha256": "7e8a9859408942b9e59979b6625c38fd2e5620aaabeaa55573d14187f4a070b9"
+      },
+      "rights": {
+        "status": "freeware",
+        "redistributionUrl": "https://www.genesis8bit.fr/amstrad/game-rom/gamecal.php",
+        "notice": "VORTEX.TXT dans l’archive originale"
+      },
+      "source": {
+        "archive": "https://www.genesis8bit.fr/frontend/gamecal/vtx_cpc.zip"
+      }
+    },
+    {
+      "slug": "deflektor",
+      "title": "Deflektor",
+      "year": 1987,
+      "publisher": "Gremlin Graphics",
+      "format": "sna",
+      "file": "games/vortex/VTX_CPC.ZIP",
+      "sha256": "53c3d95da58616d1534596b698ae39ab662d67e9824d41e175bfb5af50deb25a",
+      "archive": {
+        "type": "zip",
+        "member": "DEFLEKT.SNA",
+        "sha256": "7e8a9859408942b9e59979b6625c38fd2e5620aaabeaa55573d14187f4a070b9"
+      },
+      "rights": {
+        "status": "freeware",
+        "redistributionUrl": "https://www.genesis8bit.fr/amstrad/game-rom/gamecal.php",
+        "notice": "VORTEX.TXT dans l’archive originale"
+      },
+      "source": {
+        "archive": "https://www.genesis8bit.fr/frontend/gamecal/vtx_cpc.zip"
+      }
+    },
+    {
+      "slug": "hate",
+      "title": "H.A.T.E.",
+      "year": 1988,
+      "publisher": "Gremlin Graphics",
+      "format": "sna",
+      "file": "games/vortex/VTX_CPC.ZIP",
+      "sha256": "34151cd431546f2240f118eb0bc43e76bbb46379c93c97f98493041ba1e4832d",
+      "archive": {
+        "type": "zip",
+        "member": "HATE.SNA",
+        "sha256": "7e8a9859408942b9e59979b6625c38fd2e5620aaabeaa55573d14187f4a070b9"
+      },
+      "rights": {
+        "status": "freeware",
+        "redistributionUrl": "https://www.genesis8bit.fr/amstrad/game-rom/gamecal.php",
+        "notice": "VORTEX.TXT dans l’archive originale"
+      },
+      "source": {
+        "archive": "https://www.genesis8bit.fr/frontend/gamecal/vtx_cpc.zip"
+      }
+    },
+    {
+      "slug": "highway-encounter",
+      "title": "Highway Encounter",
+      "year": 1985,
+      "publisher": "Vortex Software",
+      "format": "sna",
+      "file": "games/vortex/VTX_CPC.ZIP",
+      "sha256": "14d62948df83685ea723f075b1ec90d966681a8f8dcf7c8a09aaf86ef82f6d1b",
+      "archive": {
+        "type": "zip",
+        "member": "HIGHWAY.SNA",
+        "sha256": "7e8a9859408942b9e59979b6625c38fd2e5620aaabeaa55573d14187f4a070b9"
+      },
+      "rights": {
+        "status": "freeware",
+        "redistributionUrl": "https://www.genesis8bit.fr/amstrad/game-rom/gamecal.php",
+        "notice": "VORTEX.TXT dans l’archive originale"
+      },
+      "source": {
+        "archive": "https://www.genesis8bit.fr/frontend/gamecal/vtx_cpc.zip"
+      }
+    },
+    {
+      "slug": "revolution",
+      "title": "Revolution",
+      "year": 1986,
+      "publisher": "U.S. Gold",
+      "format": "sna",
+      "file": "games/vortex/VTX_CPC.ZIP",
+      "sha256": "52d26b92c878d6fba52ce72b63fc1ef897a2bba5100366759432fc2e2909ee3b",
+      "archive": {
+        "type": "zip",
+        "member": "REV.SNA",
+        "sha256": "7e8a9859408942b9e59979b6625c38fd2e5620aaabeaa55573d14187f4a070b9"
+      },
+      "rights": {
+        "status": "freeware",
+        "redistributionUrl": "https://www.genesis8bit.fr/amstrad/game-rom/gamecal.php",
+        "notice": "VORTEX.TXT dans l’archive originale"
+      },
+      "source": {
+        "archive": "https://www.genesis8bit.fr/frontend/gamecal/vtx_cpc.zip"
+      }
+    },
+    {
+      "slug": "tornado-low-level",
+      "title": "Tornado Low Level",
+      "year": 1986,
+      "publisher": "Vortex Software",
+      "format": "sna",
+      "file": "games/vortex/VTX_CPC.ZIP",
+      "sha256": "85284eee250af077b0bcdf3b63eb13bb6129698bbb261ae7043c36c9d96f253b",
+      "archive": {
+        "type": "zip",
+        "member": "TLL.SNA",
+        "sha256": "7e8a9859408942b9e59979b6625c38fd2e5620aaabeaa55573d14187f4a070b9"
+      },
+      "rights": {
+        "status": "freeware",
+        "redistributionUrl": "https://www.genesis8bit.fr/amstrad/game-rom/gamecal.php",
+        "notice": "VORTEX.TXT dans l’archive originale"
+      },
+      "source": {
+        "archive": "https://www.genesis8bit.fr/frontend/gamecal/vtx_cpc.zip"
+      }
+    }
+  ]
+}
