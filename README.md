@@ -1,73 +1,76 @@
 # CPCJS
 
-CPCJS est le port navigateur de [Caprice32](https://github.com/ColinPitrat/caprice32).
-Le cœur C++ original est compilé en WebAssembly et JavaScript avec Emscripten;
-SDL2 relie l’écran, le son, le clavier et les manettes aux API du navigateur.
+**[Play CPCJS online](https://smichea.github.io/cpcjs/)**
 
-Formats acceptés: DSK, SNA, CDT, VOC, CPR, IPF, RAW et ZIP.
+CPCJS is a browser port of [Caprice32](https://github.com/ColinPitrat/caprice32).
+The original C++ core is compiled to WebAssembly and JavaScript with Emscripten;
+SDL2 connects video, audio, keyboard, and controller support to browser APIs.
 
-## Prérequis
+Supported formats: DSK, SNA, CDT, VOC, CPR, IPF, RAW, and ZIP.
 
-- Emscripten (`em++` dans le `PATH`)
-- Node.js 18 ou supérieur
-- les sources Caprice32 dans `../caprice32`, ou leur chemin dans
+## Requirements
+
+- Emscripten (`em++` available in `PATH`)
+- Node.js 18 or later
+- the Caprice32 sources in `../caprice32`, or their location provided through
   `CAPRICE32_DIR`
 
-Sur Ubuntu/Debian, Emscripten peut être installé avec:
+On Ubuntu or Debian, Emscripten can be installed with:
 
 ```sh
 sudo apt install emscripten
 ```
 
-## Construire et jouer
+## Build and run
 
 ```sh
 npm run build
 npm run serve
 ```
 
-Ouvrir ensuite <http://localhost:8080>, choisir une image de jeu, puis cliquer
-dans l’écran pour donner le focus au clavier. Le son démarre après cette action
-utilisateur, conformément aux règles des navigateurs.
+Open <http://localhost:8080>, select a game image, and click the screen to give
+the emulator keyboard focus. Audio starts after this user interaction, as
+required by browser autoplay policies.
 
-Le build produit `public/emulator/caprice32.js`, `caprice32.wasm` et le paquet de
-données préchargé. Ces artefacts ne sont pas versionnés. Le navigateur doit être
-servi via HTTP; ouvrir directement `index.html` avec `file://` ne fonctionne pas.
+The build creates `public/emulator/caprice32.js`, `caprice32.wasm`, and the
+preloaded data package. These artifacts are not committed. The application must
+be served over HTTP; opening `index.html` directly through `file://` does not
+work.
 
-## Contrôles
+## Controls
 
-- clavier CPC: clavier physique
-- joystick: flèches, `Z` et `X`
-- menu Caprice32: `F1`
-- plein écran: bouton de l’interface ou `Ctrl` + `Entrée`
+- CPC keyboard: physical keyboard
+- joystick: arrow keys, `Z`, and `X`
+- Caprice32 menu: `F1`
+- fullscreen: interface button or `Ctrl` + `Enter`
 
-Pour changer de disque après le démarrage, utilisez le menu Caprice32 (`F1`).
-Pour démarrer directement avec une autre image, rechargez la page.
+To change disks after startup, use the Caprice32 menu (`F1`). To start directly
+with another image, reload the page.
 
-## Jeux locaux et catalogue hébergé
+## Local games and hosted catalog
 
-Le bouton **Choisir un jeu** propose deux sources:
+The **Choose a game** button offers two sources:
 
-- une image CPC présente sur l'appareil de l'utilisateur;
-- un jeu du catalogue hébergé dans `public/games/`.
+- a CPC image stored on the user's device;
+- a game from the catalog hosted in `public/games/`.
 
-Les jeux hébergés suivent la convention `nom-du-jeu.<format>` en minuscules,
-avec un identifiant stable, une empreinte SHA-256 et un lien vers l'autorisation
-de redistribution dans `public/games/catalog.json`. Le navigateur contrôle
-l'empreinte du fichier avant de le lancer.
+Hosted games use lowercase `game-name.<format>` filenames, a stable identifier,
+a SHA-256 digest, and a link to the redistribution permission in
+`public/games/catalog.json`. The browser verifies the file digest before
+launching it.
 
-Le catalogue contient actuellement cinq jeux Design Design Software distribués
-avec l'autorisation de Simon Brattel et les sept jeux CPC du Vortex Emulation
-Package. Ce dernier reste hébergé sous la forme de son archive originale; le
-navigateur en extrait uniquement le jeu sélectionné en mémoire. Un autre jeu ne
-doit être ajouté que si son titulaire autorise explicitement la
-**redistribution**. Une mention « abandonware », un téléchargement gratuit ou
-une page permettant de jouer en ligne ne suffisent pas. La provenance, les
-conditions et le schéma sont documentés dans `public/games/README.md`.
+The catalog currently contains five Design Design Software games distributed
+with permission from Simon Brattel and the seven CPC games from the Vortex
+Emulation Package. The Vortex package remains hosted as its unmodified original
+archive; the browser extracts only the selected game in memory. Another game
+must not be added unless its rights holder explicitly permits
+**redistribution**. An “abandonware” label, a free download, or a page that
+allows online play is not sufficient. Provenance, terms, and the catalog schema
+are documented in `public/games/README.md`.
 
 ## Tests
 
-Installer Chromium pour Playwright une première fois, puis lancer la suite:
+Install Chromium for Playwright once, then run the suite:
 
 ```sh
 npm install
@@ -75,37 +78,41 @@ npx playwright install chromium
 npm test
 ```
 
-`npm test` reconstruit le module WebAssembly, puis valide dans un vrai Chromium
-headless les deux parcours suivants:
+`npm test` rebuilds the WebAssembly module and validates these flows in a real
+headless Chromium instance:
 
-- démarrage du CPC 6128 sans image, affichage vidéo et progression des frames;
-- chargement de l’image disque de test, saisie de `RUN"HELLO` et exécution du
-  programme BASIC jusqu’à la modification effective de l’écran et la sortie
-  exacte `Hello, World !` sur le port imprimante émulé.
+- booting the CPC 6128 without an image, with active video and frame progress;
+- loading the test disk image, entering `RUN"HELLO`, and running the BASIC
+  program until the screen changes and the emulated printer port outputs the
+  exact text `Hello, World !`;
+- downloading and starting a standalone game from the hosted catalog;
+- extracting and starting a Vortex game in memory from the original archive;
+- selecting the interface language from the browser locale and persisting a
+  manual language change.
 
-La fixture est issue des tests intégrés GPL-2.0 de Caprice32. Ces scénarios
-valident le pipeline navigateur de bout en bout; ils ne signifient pas encore
-que l’ensemble du catalogue de jeux CPC est compatible.
+The fixture comes from Caprice32's GPL-2.0 integration tests. These scenarios
+validate the browser pipeline end to end; they do not imply compatibility with
+the entire CPC software catalog.
 
-## Déployer manuellement sur GitHub Pages
+## Manual deployment to GitHub Pages
 
-Une seule fois, ouvrir **Settings → Pages → Build and deployment** dans le
-dépôt GitHub et choisir **GitHub Actions** comme source.
+For the initial setup, open **Settings → Pages → Build and deployment** in the
+GitHub repository and select **GitHub Actions** as the source.
 
-Pour chaque déploiement:
+For each deployment:
 
-1. ouvrir l’onglet **Actions** du dépôt;
-2. choisir le workflow **Deploy to GitHub Pages**;
-3. cliquer sur **Run workflow**, sélectionner la branche à publier, puis
-   confirmer avec **Run workflow**.
+1. open the repository's **Actions** tab;
+2. select the **Deploy to GitHub Pages** workflow;
+3. click **Run workflow**, select the branch to publish, and confirm with
+   **Run workflow**.
 
-Le workflow reconstruit Caprice32 en WebAssembly, publie le contenu de
-`public/` et affiche l’URL du site dans le job `deploy`. Il est uniquement
-déclenché à la demande et ne déploie rien automatiquement lors d’un push.
+The workflow rebuilds Caprice32 as WebAssembly, publishes the contents of
+`public/`, and reports the site URL in the `deploy` job. It only runs when
+manually triggered and does not deploy automatically after a push.
 
-## Licence
+## License
 
-Caprice32 et ce port sont distribués sous GPL-2.0. Les ROM incluses dans le
-dépôt Caprice32 sont empaquetées au moment du build. Les jeux tiers de
-`public/games/` conservent leur copyright et ne sont pas couverts par la GPL;
-leurs conditions sont documentées dans ce répertoire.
+Caprice32 and this port are distributed under GPL-2.0. The ROMs included in the
+Caprice32 repository are packaged during the build. Third-party games in
+`public/games/` retain their copyright and are not covered by the GPL; their
+terms are documented in that directory.

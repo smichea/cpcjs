@@ -29,7 +29,7 @@ test('rejects a hosted game without redistribution evidence', () => {
   const game = { ...validGame, rights: undefined };
   assert.throws(
     () => validateCatalog({ version: 1, games: [game] }),
-    /Entrée de catalogue invalide/
+    /error\.catalogEntryInvalid/
   );
 });
 
@@ -37,7 +37,7 @@ test('rejects a file that does not match its normalized slug and format', () => 
   const game = { ...validGame, file: 'games/Test Game.dsk' };
   assert.throws(
     () => validateCatalog({ version: 1, games: [game] }),
-    /Entrée de catalogue invalide/
+    /error\.catalogEntryInvalid/
   );
 });
 
@@ -63,6 +63,6 @@ test('rejects a missing member in the original Vortex archive', async () => {
   const archiveUrl = new URL('../public/games/vortex/VTX_CPC.ZIP', import.meta.url);
   await assert.rejects(
     extractZipMember(await readFile(archiveUrl), 'MISSING.SNA'),
-    /Fichier absent/
+    /error\.zipMemberMissing/
   );
 });

@@ -1,3 +1,5 @@
+import { appError } from './errors.js';
+
 const END_OF_CENTRAL_DIRECTORY = 0x06054b50;
 const CENTRAL_DIRECTORY_ENTRY = 0x02014b50;
 const LOCAL_FILE_HEADER = 0x04034b50;
@@ -8,18 +10,18 @@ function findEndOfCentralDirectory(view) {
   for (let offset = view.byteLength - 22; offset >= minimumOffset; offset -= 1) {
     if (view.getUint32(offset, true) === END_OF_CENTRAL_DIRECTORY) return offset;
   }
-  throw new Error('Archive ZIP invalide: répertoire central absent');
+  throw appError('error.zipDirectoryMissing');
 }
 
 function assertRange(offset, length, total) {
   if (offset < 0 || length < 0 || offset + length > total) {
-    throw new Error('Archive ZIP invalide: données tronquées');
+    throw appError('error.zipTruncated');
   }
 }
 
 async function inflateRaw(bytes) {
   if (typeof DecompressionStream !== 'function') {
-    throw new Error('Ce navigateur ne sait pas décompresser cette archive ZIP');
+    throw appError('error.zipUnsupportedBrowser');
   }
   const stream = new Blob([bytes]).stream()
     .pipeThrough(new DecompressionStream('deflate-raw'));
@@ -37,7 +39,7 @@ export async function extractZipMember(input, memberName) {
   for (let index = 0; index < entryCount; index += 1) {
     assertRange(offset, 46, view.byteLength);
     if (view.getUint32(offset, true) !== CENTRAL_DIRECTORY_ENTRY) {
-      throw new Error('Archive ZIP invalide: entrée centrale incorrecte');
+      throw appError('error.zipCentralEntry');
     }
 
     const flags = view.getUint16(offset + 8, true);
@@ -52,11 +54,11 @@ export async function extractZipMember(input, memberName) {
     const name = decoder.decode(bytes.subarray(offset + 46, offset + 46 + nameLength));
 
     if (name === memberName) {
-      if (flags & 1) throw new Error(`Membre ZIP chiffré non pris en charge: ${memberName}`);
-      if (uncompressedSize > MAX_MEMBER_SIZE) throw new Error(`Membre ZIP trop volumineux: ${memberName}`);
+      if (flags & 1) throw appError('error.zipEncrypted', { member: memberName });
+      if (uncompressedSize > MAX_MEMBER_SIZE) throw appError('error.zipTooLarge', { member: memberName });
       assertRange(localOffset, 30, view.byteLength);
       if (view.getUint32(localOffset, true) !== LOCAL_FILE_HEADER) {
-        throw new Error('Archive ZIP invalide: en-tête local incorrect');
+        throw appError('error.zipLocalHeader');
       }
       const localNameLength = view.getUint16(localOffset + 26, true);
       const localExtraLength = view.getUint16(localOffset + 28, true);
@@ -68,9 +70,9 @@ export async function extractZipMember(input, memberName) {
         : method === 8
           ? await inflateRaw(compressed)
           : null;
-      if (!extracted) throw new Error(`Compression ZIP non prise en charge: méthode ${method}`);
+      if (!extracted) throw appError('error.zipCompression', { method });
       if (extracted.byteLength !== uncompressedSize) {
-        throw new Error(`Taille incorrecte après extraction de ${memberName}`);
+        throw appError('error.zipSize', { member: memberName });
       }
       return extracted;
     }
@@ -78,5 +80,5 @@ export async function extractZipMember(input, memberName) {
     offset += 46 + nameLength + extraLength + commentLength;
   }
 
-  throw new Error(`Fichier absent de l’archive ZIP: ${memberName}`);
+  throw appError('error.zipMemberMissing', { member: memberName });
 }
