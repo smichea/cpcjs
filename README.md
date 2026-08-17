@@ -51,9 +51,25 @@ Pour démarrer directement avec une autre image, rechargez la page.
 
 ## Tests
 
+Installer Chromium pour Playwright une première fois, puis lancer la suite:
+
 ```sh
+npm install
+npx playwright install chromium
 npm test
 ```
+
+`npm test` reconstruit le module WebAssembly, puis valide dans un vrai Chromium
+headless les deux parcours suivants:
+
+- démarrage du CPC 6128 sans image, affichage vidéo et progression des frames;
+- chargement de l’image disque de test, saisie de `RUN"HELLO` et exécution du
+  programme BASIC jusqu’à la modification effective de l’écran et la sortie
+  exacte `Hello, World !` sur le port imprimante émulé.
+
+La fixture est issue des tests intégrés GPL-2.0 de Caprice32. Ces scénarios
+valident le pipeline navigateur de bout en bout; ils ne signifient pas encore
+que l’ensemble du catalogue de jeux CPC est compatible.
 
 ## Licence
 

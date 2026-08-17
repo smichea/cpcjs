@@ -32,6 +32,7 @@ em++ \
   -sUSE_SDL=2 -sUSE_FREETYPE=1 -sUSE_LIBPNG=1 -sUSE_ZLIB=1 \
   -sASYNCIFY -sALLOW_MEMORY_GROWTH=1 -sINITIAL_MEMORY=67108864 \
   -sENVIRONMENT=web -sEXIT_RUNTIME=0 -sFORCE_FILESYSTEM=1 \
+  -sEXPORTED_FUNCTIONS=_main,_fflush \
   -sEXPORTED_RUNTIME_METHODS=callMain,FS \
   --preload-file "$caprice_dir/rom@/rom" \
   --preload-file "$caprice_dir/resources@/resources" \
