@@ -1,10 +1,12 @@
+import { appError } from './errors.js';
+
 const FORMATS = new Set(['dsk', 'sna', 'cdt', 'voc', 'cpr', 'ipf', 'raw', 'zip']);
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const SHA256_PATTERN = /^[a-f0-9]{64}$/;
 
 export function validateCatalog(catalog) {
   if (catalog?.version !== 1 || !Array.isArray(catalog.games)) {
-    throw new Error('Catalogue de jeux invalide');
+    throw appError('error.catalogInvalid');
   }
 
   const slugs = new Set();
@@ -31,7 +33,7 @@ export function validateCatalog(catalog) {
       || (archive ? !validArchive : game.file !== expectedFile)
       || !SHA256_PATTERN.test(game?.sha256 || '')
       || !validRights) {
-      throw new Error(`Entrée de catalogue invalide: ${game?.slug || 'sans identifiant'}`);
+      throw appError('error.catalogEntryInvalid', { slug: game?.slug || '?' });
     }
 
     slugs.add(game.slug);

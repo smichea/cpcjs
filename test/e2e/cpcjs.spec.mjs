@@ -5,6 +5,7 @@ const fixtureUrl = new URL('../fixtures/hello.zip.b64', import.meta.url);
 
 async function waitForRuntime(page) {
   await page.goto('/');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   await expect(page.locator('.repo-link')).toHaveAttribute('href', 'https://github.com/smichea/cpcjs');
   await expect(page.locator('#status')).toHaveAttribute('data-state', 'ready');
   await expect.poll(() => page.evaluate(() => window.cpcjsState.runtimeReady)).toBe(true);
@@ -56,7 +57,7 @@ test('boots the CPC and keeps emulating without a game', async ({ page }) => {
   const placeholder = await page.locator('#canvas').screenshot();
   await page.locator('#start-empty').click();
 
-  await expect(page.locator('#status')).toHaveText('CPC 6128 démarré');
+  await expect(page.locator('#status')).toHaveText('CPC 6128 started');
   await expect.poll(() => page.evaluate(() => window.cpcjsState.mode)).toBe('empty');
   await waitForFrames(page, 30);
 
@@ -76,7 +77,7 @@ test('loads a disk image and runs its program', async ({ page }) => {
   await page.locator('#choose-game').click();
   await expect(page.locator('#game-picker')).toBeVisible();
   await expect(page.locator('#catalog-message'))
-    .toHaveText('Ces fichiers sont publiés avec l’autorisation indiquée dans le catalogue.');
+    .toHaveText('These files are published under the permission recorded in the catalog.');
   await expect(page.locator('#hosted-game option')).toHaveCount(12);
   await page.evaluate(() => {
     const config = window.Module.FS.readFile('/cap32.cfg', { encoding: 'utf8' });
@@ -88,7 +89,7 @@ test('loads a disk image and runs its program', async ({ page }) => {
     buffer: fixture
   });
 
-  await expect(page.locator('#status')).toHaveText('En jeu — hello.zip');
+  await expect(page.locator('#status')).toHaveText('Playing — hello.zip');
   await expect.poll(() => page.evaluate(() => window.cpcjsState.mode)).toBe('game');
   await expect.poll(() => page.evaluate(() => window.cpcjsState.gameSource)).toBe('local');
   await expect.poll(() => page.evaluate(() => window.cpcjsState.gamePath)).toBe('/games/hello.zip');
@@ -123,7 +124,7 @@ test('downloads and starts a hosted game from the catalog', async ({ page }) => 
   await page.locator('#launch-hosted').click();
 
   await expect(page.locator('#game-picker')).not.toBeVisible();
-  await expect(page.locator('#status')).toHaveText('En jeu — dark-star.sna');
+  await expect(page.locator('#status')).toHaveText('Playing — dark-star.sna');
   await expect.poll(() => page.evaluate(() => window.cpcjsState.mode)).toBe('game');
   await expect.poll(() => page.evaluate(() => window.cpcjsState.gameSource)).toBe('hosted');
   await expect.poll(() => page.evaluate(() => window.cpcjsState.gamePath))
@@ -141,10 +142,31 @@ test('extracts a Vortex game in memory from the original hosted archive', async 
   await page.locator('#hosted-game').selectOption('alien-highway');
   await page.locator('#launch-hosted').click();
 
-  await expect(page.locator('#status')).toHaveText('En jeu — alien-highway.sna');
+  await expect(page.locator('#status')).toHaveText('Playing — alien-highway.sna');
   await expect.poll(() => page.evaluate(() => window.cpcjsState.gameSource)).toBe('hosted');
   await expect.poll(() => page.evaluate(() => window.cpcjsState.gamePath))
     .toBe('/games/alien-highway.sna');
   await waitForFrames(page, 30);
   await expectHealthyRuntime(page, errors);
+});
+
+test.describe('browser language selection', () => {
+  test.use({ locale: 'fr-FR' });
+
+  test('uses the browser language and persists a manual choice', async ({ page }) => {
+    await page.goto('/');
+    await expect(page.locator('#status')).toHaveAttribute('data-state', 'ready');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
+    await expect(page.locator('#choose-game')).toHaveText('Choisir un jeu');
+    await expect(page.locator('.repo-link')).toContainText('Voir le code sur GitHub');
+
+    await page.locator('#language-select').selectOption('en');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+    await expect(page.locator('#choose-game')).toHaveText('Choose a game');
+    await expect(page.locator('#status')).toHaveText('Ready — choose a game');
+
+    await page.reload();
+    await expect(page.locator('#status')).toHaveAttribute('data-state', 'ready');
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  });
 });

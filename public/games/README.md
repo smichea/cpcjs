@@ -1,64 +1,65 @@
-# Catalogue de jeux hébergés
+# Hosted game catalog
 
-Ce répertoire ne doit contenir que des jeux dont la redistribution est
-explicitement autorisée par le titulaire des droits.
+This directory must only contain games whose rights holders explicitly permit
+redistribution.
 
-## Jeux inclus
+## Included games
 
-Les cinq snapshots Design Design Software suivants sont inclus: **Bat & Ball**,
-**Dark Star**, **Forbidden Planet**, **Halls of the Things '85** et
-**Tank Busters**. Leur auteur Simon Brattel les a donnés pour distribution
-gratuite et non modifiée. La notice originale est conservée dans
+The following five Design Design Software snapshots are included: **Bat &
+Ball**, **Dark Star**, **Forbidden Planet**, **Halls of the Things '85**, and
+**Tank Busters**. Their author, Simon Brattel, donated them for unmodified,
+free-of-charge distribution. The original notice is preserved in
 `DESIGN-DESIGN-NOTICE.txt`.
 
-Source originale: `https://www.genesis8bit.fr/frontend/gamecal/desdes.zip`
-(SHA-256 de l'archive: `5ee39138a2b451711eeb65fedf1a636bad079dc039e55ced44c77a7862cd9a47`).
+Original source: `https://www.genesis8bit.fr/frontend/gamecal/desdes.zip`
+(archive SHA-256: `5ee39138a2b451711eeb65fedf1a636bad079dc039e55ced44c77a7862cd9a47`).
 
-Les snapshots ont seulement été renommés selon la convention du dépôt; leurs
-octets sont inchangés et leurs empreintes figurent dans `catalog.json`. Ces jeux
-restent la propriété de leurs titulaires et ne sont pas couverts par la licence
-GPL-2.0 du code CPCJS.
+The snapshots were only renamed to follow the repository convention; their
+bytes are unchanged and their digests are recorded in `catalog.json`. These
+games remain the property of their respective rights holders and are not
+covered by CPCJS's GPL-2.0 license.
 
-Les sept jeux CPC du **Vortex Emulation Package** sont également proposés:
-**Alien Highway**, **Android One**, **Deflektor**, **H.A.T.E.**,
-**Highway Encounter**, **Revolution** et **Tornado Low Level**. Conformément à
-la notice Vortex, ils restent groupés dans l'archive originale non modifiée
-`vortex/VTX_CPC.ZIP`, qui contient aussi `VORTEX.TXT`. Le client extrait
-uniquement le snapshot choisi en mémoire au moment du lancement.
+The seven CPC games from the **Vortex Emulation Package** are also available:
+**Alien Highway**, **Android One**, **Deflektor**, **H.A.T.E.**, **Highway
+Encounter**, **Revolution**, and **Tornado Low Level**. In accordance with the
+Vortex notice, they remain grouped in the unmodified original
+`vortex/VTX_CPC.ZIP` archive, which also contains `VORTEX.TXT`. The client only
+extracts the selected snapshot in memory when launching it.
 
-Source originale: `https://www.genesis8bit.fr/frontend/gamecal/vtx_cpc.zip`
+Original source: `https://www.genesis8bit.fr/frontend/gamecal/vtx_cpc.zip`
 (SHA-256: `7e8a9859408942b9e59979b6625c38fd2e5620aaabeaa55573d14187f4a070b9`).
-Vortex Software conserve tous les copyrights; la distribution doit rester
-gratuite, l'archive et sa notice ne doivent pas être altérées.
+Vortex Software retains all copyrights; distribution must remain free of
+charge, and the archive and its notice must not be altered.
 
 ## Convention
 
-- identifiant et fichier en minuscules ASCII, au format `nom-du-jeu`;
-- un seul fichier jouable par entrée, nommé `nom-du-jeu.<format>`;
-- lorsqu'une autorisation exige une archive originale, plusieurs entrées peuvent
-  référencer cette archive et indiquer leur membre dans le champ `archive`;
-- formats acceptés: `dsk`, `sna`, `cdt`, `voc`, `cpr`, `ipf`, `raw`, `zip`;
-- empreinte SHA-256 obligatoire;
-- URL HTTPS obligatoire vers l'autorisation de redistribution.
+- use a lowercase ASCII identifier and filename in `game-name` form;
+- store one playable file per entry as `game-name.<format>`;
+- when redistribution terms require an original archive, multiple entries may
+  reference that archive and identify their member through the `archive` field;
+- supported formats are `dsk`, `sna`, `cdt`, `voc`, `cpr`, `ipf`, `raw`, and
+  `zip`;
+- a SHA-256 digest is required;
+- an HTTPS link to the redistribution permission is required.
 
-Exemple d'entrée dans `catalog.json`:
+Example `catalog.json` entry:
 
 ```json
 {
-  "slug": "nom-du-jeu",
-  "title": "Nom du jeu",
+  "slug": "game-name",
+  "title": "Game Name",
   "year": 1987,
-  "publisher": "Éditeur",
+  "publisher": "Publisher",
   "format": "dsk",
-  "file": "games/nom-du-jeu.dsk",
-  "sha256": "empreinte SHA-256 en 64 caractères hexadécimaux",
+  "file": "games/game-name.dsk",
+  "sha256": "64-character hexadecimal SHA-256 digest",
   "rights": {
     "status": "freeware",
-    "redistributionUrl": "https://source.example/autorisation"
+    "redistributionUrl": "https://source.example/permission"
   }
 }
 ```
 
-Une mention « abandonware », la présence sur un site de téléchargement ou une
-autorisation de jouer en ligne ne constitue pas à elle seule une autorisation
-de republier le fichier dans ce dépôt.
+An “abandonware” label, availability on a download site, or permission to play
+a game online does not by itself grant permission to republish the file in this
+repository.

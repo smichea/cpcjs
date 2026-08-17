@@ -16,6 +16,7 @@ h1 { margin: 0; font-size: clamp(38px, 7vw, 68px); line-height: .9; letter-spaci
 h1 span { color: #ffcc45; }
 .repo-link { padding: 8px 12px; border: 1px solid #314361; border-radius: 999px; color: #c7d6ed; font-size: 13px; text-decoration: none; transition: .15s ease; }
 .repo-link:hover { border-color: #7fd5ff; color: #fff; transform: translateY(-1px); }
+#language-select { width: auto; padding: 7px 10px; border-radius: 999px; font-size: 13px; }
 .status { margin: 0; padding: 8px 12px; border: 1px solid #314361; border-radius: 999px; color: #aebbd0; font-size: 13px; }
 .status[data-state="ready"] { color: #88efbd; border-color: #246044; }
 .status[data-state="running"] { color: #7fd5ff; border-color: #245b75; }

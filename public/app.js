@@ -1,6 +1,7 @@
 import { safeName } from './filename.js';
 import { sha256Hex, validateCatalog } from './catalog.js';
 import { extractZipMember } from './archive.js';
+import { initI18n, t } from './i18n.js';
 
 const canvas = document.querySelector('#canvas');
 const status = document.querySelector('#status');
@@ -15,9 +16,14 @@ const startEmpty = document.querySelector('#start-empty');
 const fullscreen = document.querySelector('#fullscreen');
 const screenMessage = document.querySelector('#screen-message');
 const logs = document.querySelector('#logs');
+const languageSelect = document.querySelector('#language-select');
+
+initI18n(languageSelect);
 
 let started = false;
 let hostedGames = [];
+let statusDescriptor = { key: 'status.loading', state: '', values: {} };
+let catalogDescriptor = { key: 'catalog.loading', values: {} };
 let runtimeReady;
 const ready = new Promise((resolve) => { runtimeReady = resolve; });
 
@@ -35,28 +41,47 @@ function log(message) {
   logs.scrollTop = logs.scrollHeight;
 }
 
-function setStatus(message, state = '') {
-  status.textContent = message;
+function setStatus(key, state = '', values = {}) {
+  statusDescriptor = { key, state, values };
+  status.textContent = t(key, values);
   status.dataset.state = state;
 }
+
+function setRawStatus(message) {
+  statusDescriptor = null;
+  status.textContent = message;
+}
+
+function setCatalogMessage(key, values = {}) {
+  catalogDescriptor = { key, values };
+  catalogMessage.textContent = t(key, values);
+}
+
+window.addEventListener('cpcjs:languagechange', () => {
+  if (statusDescriptor) {
+    const { key, state, values } = statusDescriptor;
+    setStatus(key, state, values);
+  }
+  if (catalogDescriptor) setCatalogMessage(catalogDescriptor.key, catalogDescriptor.values);
+});
 
 window.Module = {
   noInitialRun: true,
   canvas,
   locateFile: (path) => `emulator/${path}`,
   print: log,
-  printErr: (message) => log(`[erreur] ${message}`),
-  setStatus: (message) => message && setStatus(message),
+  printErr: (message) => log(`[${t('log.errorPrefix')}] ${message}`),
+  setStatus: (message) => message && setRawStatus(message),
   onRuntimeInitialized() {
     window.cpcjsState.runtimeReady = true;
-    setStatus('Prêt — choisissez un jeu', 'ready');
+    setStatus('status.ready', 'ready');
     runtimeReady();
   }
 };
 
 async function launch(file, source = 'local') {
   if (started) {
-    setStatus('Rechargez la page pour changer de jeu', 'warning');
+    setStatus('status.reload', 'warning');
     return;
   }
 
@@ -68,7 +93,7 @@ async function launch(file, source = 'local') {
     Module.FS.writeFile(path, new Uint8Array(await file.arrayBuffer()));
     args.push(path);
     window.cpcjsState.gamePath = path;
-    log(`Image chargée: ${file.name} (${file.size} octets)`);
+    log(t('log.imageLoaded', { name: file.name, size: file.size }));
   }
 
   started = true;
@@ -81,7 +106,7 @@ async function launch(file, source = 'local') {
   startEmpty.disabled = true;
   fullscreen.disabled = false;
   screenMessage.hidden = true;
-  setStatus(file ? `En jeu — ${file.name}` : 'CPC 6128 démarré', 'running');
+  setStatus(file ? 'status.playing' : 'status.started', 'running', file ? { name: file.name } : {});
   canvas.focus();
   Module.callMain(args);
 }
@@ -93,7 +118,7 @@ async function loadCatalog() {
     hostedGames = validateCatalog(await response.json());
 
     if (!hostedGames.length) {
-      catalogMessage.textContent = 'Aucun jeu redistribuable n’est encore référencé.';
+      setCatalogMessage('catalog.empty');
       return;
     }
 
@@ -103,11 +128,11 @@ async function loadCatalog() {
       option.textContent = `${game.title}${game.year ? ` (${game.year})` : ''}`;
       hostedGame.append(option);
     }
-    catalogMessage.textContent = 'Ces fichiers sont publiés avec l’autorisation indiquée dans le catalogue.';
+    setCatalogMessage('catalog.available');
     hostedControls.hidden = false;
   } catch (error) {
     console.error(error);
-    catalogMessage.textContent = 'Le catalogue hébergé est indisponible.';
+    setCatalogMessage('catalog.unavailable');
   }
 }
 
@@ -116,17 +141,17 @@ async function downloadHostedGame() {
   if (!game) return;
 
   launchHosted.disabled = true;
-  setStatus(`Téléchargement — ${game.title}`, 'loading');
+  setStatus('status.downloading', 'loading', { title: game.title });
   try {
     const response = await fetch(game.file);
-    if (!response.ok) throw new Error(`Téléchargement impossible (HTTP ${response.status})`);
+    if (!response.ok) throw new Error(t('error.download', { status: response.status }));
     let buffer = await response.arrayBuffer();
     if (game.archive && await sha256Hex(buffer) !== game.archive.sha256) {
-      throw new Error(`Empreinte invalide pour l’archive de ${game.title}`);
+      throw new Error(t('error.archiveDigest', { title: game.title }));
     }
     if (game.archive) buffer = await extractZipMember(buffer, game.archive.member);
     if (await sha256Hex(buffer) !== game.sha256) {
-      throw new Error(`Empreinte invalide pour ${game.title}`);
+      throw new Error(t('error.digest', { title: game.title }));
     }
     gamePicker.close();
     await launch(new File([buffer], `${game.slug}.${game.format}`), 'hosted');
@@ -151,16 +176,19 @@ canvas.addEventListener('click', () => canvas.focus());
 
 function fatal(error) {
   console.error(error);
-  window.cpcjsState.error = error.message || String(error);
-  log(error.stack || error.message || String(error));
-  setStatus('Échec du démarrage — consultez le journal', 'error');
+  const message = error.i18nKey
+    ? t(error.i18nKey, error.i18nValues)
+    : error.message || String(error);
+  window.cpcjsState.error = message;
+  log(error.stack ? error.stack.replace(error.message, message) : message);
+  setStatus('status.failed', 'error');
 }
 
 const emulatorScript = document.createElement('script');
 emulatorScript.src = 'emulator/caprice32.js';
 emulatorScript.async = true;
 emulatorScript.onerror = () => fatal(new Error(
-  'Build WebAssembly absent. Exécutez npm run build, puis relancez le serveur.'
+  t('error.buildMissing')
 ));
 document.body.append(emulatorScript);
 loadCatalog();

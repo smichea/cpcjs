@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#101728">
-  <title>CPCJS — Caprice32 dans le navigateur</title>
+  <title>CPCJS — Caprice32 in your browser</title>
   <link rel="stylesheet" href="app.css">
 </head>
 <body>
@@ -16,64 +16,68 @@
       </div>
       <div class="header-actions">
         <a class="repo-link" href="https://github.com/smichea/cpcjs" target="_blank" rel="noopener noreferrer">
-          Voir le code sur GitHub <span aria-hidden="true">↗</span>
+          <span data-i18n="repo.link">View the code on GitHub</span> <span aria-hidden="true">↗</span>
         </a>
-        <p id="status" class="status" role="status">Chargement de l’émulateur…</p>
+        <select id="language-select" data-i18n-aria-label="language.label" aria-label="Language">
+          <option value="fr">Français</option>
+          <option value="en">English</option>
+        </select>
+        <p id="status" class="status" role="status" data-i18n="status.loading">Loading the emulator…</p>
       </div>
     </header>
 
-    <section class="machine" aria-label="Émulateur Amstrad CPC">
+    <section class="machine" data-i18n-aria-label="machine.aria" aria-label="Amstrad CPC emulator">
       <div class="screen-frame">
-        <canvas id="canvas" tabindex="0" width="768" height="540" aria-label="Écran de l’Amstrad CPC"></canvas>
+        <canvas id="canvas" tabindex="0" width="768" height="540" data-i18n-aria-label="canvas.aria" aria-label="Amstrad CPC screen"></canvas>
         <div id="screen-message" class="screen-message">
-          <strong>Choisissez un jeu CPC</strong>
-          <span>DSK, SNA, CDT, VOC, CPR, IPF, RAW ou ZIP</span>
+          <strong data-i18n="screen.choose">Choose a CPC game</strong>
+          <span data-i18n="screen.formats">DSK, SNA, CDT, VOC, CPR, IPF, RAW, or ZIP</span>
         </div>
       </div>
 
       <div class="controls">
-        <button id="choose-game" class="primary-button" type="button">Choisir un jeu</button>
-        <button id="start-empty" type="button">Démarrer sans jeu</button>
-        <button id="fullscreen" type="button" disabled>Plein écran</button>
+        <button id="choose-game" class="primary-button" type="button" data-i18n="controls.choose">Choose a game</button>
+        <button id="start-empty" type="button" data-i18n="controls.empty">Start without a game</button>
+        <button id="fullscreen" type="button" disabled data-i18n="controls.fullscreen">Fullscreen</button>
       </div>
     </section>
 
     <dialog id="game-picker" aria-labelledby="game-picker-title">
       <form method="dialog" class="picker-header">
         <div>
-          <p class="eyebrow">BIBLIOTHÈQUE CPC</p>
-          <h2 id="game-picker-title">Choisir un jeu</h2>
+          <p class="eyebrow" data-i18n="picker.eyebrow">CPC LIBRARY</p>
+          <h2 id="game-picker-title" data-i18n="picker.title">Choose a game</h2>
         </div>
-        <button class="close-button" value="cancel" aria-label="Fermer">×</button>
+        <button class="close-button" value="cancel" data-i18n-aria-label="picker.close" aria-label="Close">×</button>
       </form>
 
       <section class="picker-section">
-        <h3>Depuis cet appareil</h3>
-        <p>Ouvrez une image CPC conservée sur votre ordinateur.</p>
-        <label class="file-button" for="game-file">Parcourir les fichiers</label>
+        <h3 data-i18n="local.title">From this device</h3>
+        <p data-i18n="local.description">Open a CPC image stored on your computer.</p>
+        <label class="file-button" for="game-file" data-i18n="local.browse">Browse files</label>
         <input id="game-file" type="file" accept=".dsk,.sna,.cdt,.voc,.cpr,.ipf,.raw,.zip">
       </section>
 
       <section class="picker-section">
-        <h3>Jeux hébergés</h3>
-        <p id="catalog-message">Chargement du catalogue…</p>
+        <h3 data-i18n="hosted.title">Hosted games</h3>
+        <p id="catalog-message" data-i18n="catalog.loading">Loading the catalog…</p>
         <div id="hosted-controls" class="hosted-controls" hidden>
-          <label for="hosted-game">Jeu</label>
+          <label for="hosted-game" data-i18n="hosted.game">Game</label>
           <select id="hosted-game"></select>
-          <button id="launch-hosted" type="button">Jouer</button>
+          <button id="launch-hosted" type="button" data-i18n="hosted.play">Play</button>
         </div>
       </section>
     </dialog>
 
     <section class="help">
-      <div><kbd>↑ ↓ ← →</kbd><span>Joystick</span></div>
-      <div><kbd>Z</kbd><kbd>X</kbd><span>Feu 1 / 2</span></div>
-      <div><kbd>F1</kbd><span>Menu Caprice32</span></div>
-      <div><kbd>Ctrl</kbd><kbd>Entrée</kbd><span>Plein écran</span></div>
+      <div><kbd>↑ ↓ ← →</kbd><span data-i18n="help.joystick">Joystick</span></div>
+      <div><kbd>Z</kbd><kbd>X</kbd><span data-i18n="help.fire">Fire 1 / 2</span></div>
+      <div><kbd>F1</kbd><span data-i18n="help.menu">Caprice32 menu</span></div>
+      <div><kbd>Ctrl</kbd><kbd data-i18n="help.enter">Enter</kbd><span data-i18n="help.fullscreen">Fullscreen</span></div>
     </section>
 
     <details id="logs-panel">
-      <summary>Journal technique</summary>
+      <summary data-i18n="logs.summary">Technical log</summary>
       <pre id="logs"></pre>
     </details>
   </main>
