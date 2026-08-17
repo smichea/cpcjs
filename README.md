@@ -71,6 +71,22 @@ La fixture est issue des tests intégrés GPL-2.0 de Caprice32. Ces scénarios
 valident le pipeline navigateur de bout en bout; ils ne signifient pas encore
 que l’ensemble du catalogue de jeux CPC est compatible.
 
+## Déployer manuellement sur GitHub Pages
+
+Une seule fois, ouvrir **Settings → Pages → Build and deployment** dans le
+dépôt GitHub et choisir **GitHub Actions** comme source.
+
+Pour chaque déploiement:
+
+1. ouvrir l’onglet **Actions** du dépôt;
+2. choisir le workflow **Deploy to GitHub Pages**;
+3. cliquer sur **Run workflow**, sélectionner la branche à publier, puis
+   confirmer avec **Run workflow**.
+
+Le workflow reconstruit Caprice32 en WebAssembly, publie le contenu de
+`public/` et affiche l’URL du site dans le job `deploy`. Il est uniquement
+déclenché à la demande et ne déploie rien automatiquement lors d’un push.
+
 ## Licence
 
 Caprice32 et ce port sont distribués sous GPL-2.0. Les ROM incluses dans le
